@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Writing & Public Speaking â€“ Power Learning</title>
+    <style>
+        :root {
+            --bg: #f7f9fc;
+            --surface: #ffffff;
+            --primary: #0f2b46;
+            --primary-light: #1a4b6e;
+            --accent: #d4922a;
+            --accent-light: #f0b84d;
+            --text: #1e293b;
+            --text-light: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.25s ease;
+            --font: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* LOGIN OVERLAY */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(145deg, #081b2f 0%, #132e4a 50%, #1a3f5c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .login-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .login-card {
+            background: #fff;
+            border-radius: 22px;
+            padding: 2.6rem 2.2rem;
+            width: 92%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            text-align: center;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-card .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .login-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        .login-card .subtitle {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            margin-bottom: 0.7rem;
+            background: #f8fafc;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .login-card input:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(26,75,110,0.08);
+            background: #fff;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: var(--transition);
+            margin-top: 0.4rem;
+        }
+        .btn-login:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(15,43,70,0.3);
+        }
+        .login-error {
+            color: #dc3545;
+            font-size: 0.85rem;
+            min-height: 1.3em;
+            margin-top: 0.4rem;
+        }
+
+        /* LAYOUT */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        .sidebar {
+            width: 270px;
+            background: var(--primary);
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            padding: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 25px rgba(0,0,0,0.15);
+            transition: transform 0.35s ease;
+        }
+        .sidebar-header {
+            padding: 0 1.3rem 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 0.8rem;
+        }
+        .sidebar-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .badge {
+            background: var(--accent);
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 0 0.8rem;
+        }
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.65rem 1rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 3px;
+            transition: var(--transition);
+        }
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+        }
+        .unit-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .sidebar-nav a.active .unit-num {
+            background: var(--accent);
+        }
+        .sidebar-footer {
+            padding: 1rem 1.3rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: auto;
+        }
+
+        /* MAIN */
+        .main-content {
+            flex: 1;
+            margin-left: 270px;
+            padding: 2.2rem 2.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .page-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.4px;
+            margin-bottom: 0.3rem;
+        }
+        .page-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        .questions-only {
+            margin-bottom: 2rem;
+        }
+        .questions-only h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .question-unit {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--accent);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            padding: 0.9rem 1.1rem;
+            margin-top: 1.1rem;
+        }
+        .question-unit:first-of-type {
+            margin-top: 0;
+        }
+        .question-unit h3 {
+            color: var(--primary-light);
+            font-size: 1rem;
+            margin-bottom: 0.45rem;
+        }
+        .question-unit ol {
+            padding-left: 1.4rem;
+        }
+        .question-unit li {
+            margin-bottom: 0.35rem;
+            color: var(--text);
+            font-size: 0.94rem;
+        }
+
+        .unit-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .unit-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ACCORDION */
+        .accordion-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            margin-bottom: 0.9rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+        .accordion-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+        }
+        .accordion-header {
+            padding: 1rem 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--primary);
+            user-select: none;
+            transition: background 0.2s;
+            letter-spacing: -0.2px;
+        }
+        .accordion-header:hover {
+            background: #fafcff;
+        }
+        .q-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #eef2f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--primary-light);
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+        .accordion-card.open .q-icon {
+            background: var(--accent);
+            color: #fff;
+        }
+        .arrow {
+            margin-left: auto;
+            transition: transform 0.3s;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            align-self: center;
+        }
+        .accordion-card.open .arrow {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+            padding: 0 1.3rem;
+            font-size: 0.9rem;
+            color: var(--text);
+            line-height: 1.75;
+        }
+        .accordion-card.open .accordion-body {
+            max-height: 6000px;
+            padding: 0 1.3rem 1.3rem;
+        }
+        .accordion-body ul, .accordion-body ol {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+        .accordion-body li {
+            margin-bottom: 0.4rem;
+        }
+        .accordion-body strong {
+            color: #0b2b44;
+        }
+        .highlight-box {
+            background: #fffbeb;
+            border-left: 5px solid var(--accent);
+            padding: 0.7rem 1rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 0.9rem 0;
+            font-size: 0.88rem;
+        }
+        .laq-answer {
+            display: grid;
+            gap: 0.85rem;
+        }
+        .answer-block {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.85rem 1rem;
+        }
+        .answer-block h4 {
+            color: var(--primary);
+            font-size: 0.86rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.45rem;
+        }
+        .answer-block p {
+            margin-bottom: 0.45rem;
+        }
+        .answer-block p:last-child {
+            margin-bottom: 0;
+        }
+        .point-list {
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+        .point-list li {
+            margin-bottom: 0.45rem;
+        }
+        .memory-box,
+        .exam-line {
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            font-size: 0.88rem;
+        }
+        .memory-box {
+            background: #fff7ed;
+            border-left: 5px solid var(--accent);
+        }
+        .exam-line {
+            background: #eef7ff;
+            border-left: 5px solid var(--primary-light);
+        }
+        .section-label {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.7rem 0;
+            font-size: 0.85rem;
+        }
+        table th, table td {
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+        }
+        table th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* MOBILE */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.2rem 1rem;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+            .page-title {
+                font-size: 1.5rem;
+                margin-top: 2rem;
+            }
+            .accordion-header {
+                font-size: 0.88rem;
+                padding: 0.8rem 1rem;
+            }
+            .accordion-body {
+                font-size: 0.84rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <div class="logo-icon">ðŸ“˜</div>
+            <h2>Academic Power Portal</h2>
+            <p class="subtitle">Enter credentials to unlock all units</p>
+            <input type="text" id="usernameInput" placeholder="Username" autocomplete="off">
+            <input type="password" id="passwordInput" placeholder="Password">
+            <button class="btn-login" onclick="handleLogin()">Sign In</button>
+            <p class="login-error" id="loginError"></p>
+        </div>
+    </div>
+
+    <button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">â˜°</button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>ðŸ“š All Units <span class="badge">5</span></h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#unit1" class="active" onclick="navigateTo('unit1')"><span class="unit-num">I</span> Intro to Academic Writing</a>
+                <a href="#unit2" onclick="navigateTo('unit2')"><span class="unit-num">II</span> Academic Journal Article</a>
+                <a href="#unit3" onclick="navigateTo('unit3')"><span class="unit-num">III</span> Essay & Writing Reviews</a>
+                <a href="#unit4" onclick="navigateTo('unit4')"><span class="unit-num">IV</span> Public Speaking</a>
+                <a href="#unit5" onclick="navigateTo('unit5')"><span class="unit-num">V</span> Public Speaking & Non-Verbal</a>
+            </nav>
+            <div class="sidebar-footer">Â© 2026 Â· powerstar</div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <h1 class="page-title">Academic Writing & Public Speaking</h1>
+            <p class="page-subtitle">Detailed pointâ€‘wise answers Â· Fast memorization Â· Highâ€‘scoring LAQ format</p>
+
+            <section class="questions-only" aria-labelledby="questionsOnlyTitle">
+                <h2 id="questionsOnlyTitle">Questions Only</h2>
+
+                <div class="question-unit">
+                    <h3>UNIT - I: Introduction to Academic Writing</h3>
+                    <ol>
+                        <li>What is academic writing? Explain its types and features.</li>
+                        <li>Explain transition words and their role in academic writing.</li>
+                        <li>Differentiate between analytical writing and critical writing.</li>
+                        <li>Explain the stages/process of writing with examples.</li>
+                        <li>Describe your favourite incident or happiest moment in life.</li>
+                    </ol>
+                </div>
+
+                <div class="question-unit">
+                    <h3>UNIT - II: Academic Journal Article</h3>
+                    <ol>
+                        <li>Differentiate between summarizing and paraphrasing with examples.</li>
+                        <li>Explain abstract writing and research project proposal writing.</li>
+                        <li>Explain qualitative and quantitative research methods.</li>
+                        <li>Discuss citation styles with examples of APA, MLA, and IEEE formats.</li>
+                        <li>Differentiate between conference papers and journal articles.</li>
+                        <li>Explain editing, proofreading, and plagiarism.</li>
+                        <li>Explain internship application writing and its importance.</li>
+                    </ol>
+                </div>
+
+                <div class="question-unit">
+                    <h3>UNIT - III: Essay & Writing Reviews</h3>
+                    <ol>
+                        <li>Write a compare and contrast essay on traditional classroom vs online education.</li>
+                        <li>Write an argumentative essay on the impact of technology or AI on society.</li>
+                        <li>Differentiate between argumentative, expository, and exploratory essays.</li>
+                        <li>Explain tone and style in essay writing.</li>
+                        <li>Explain book/film review writing and synopsis writing.</li>
+                        <li>What is SOP (Statement of Purpose)? Explain its structure and importance.</li>
+                    </ol>
+                </div>
+
+                <div class="question-unit">
+                    <h3>UNIT - IV: Public Speaking</h3>
+                    <ol>
+                        <li>Explain the role of confidence and clarity in public speaking.</li>
+                        <li>Explain stage dynamics and public speaking strategies.</li>
+                        <li>Explain speech analysis and public speaking as a performative act.</li>
+                        <li>Explain the 4Ps of presentation.</li>
+                        <li>Differentiate between academic and non-academic speech.</li>
+                        <li>Write a vote of thanks speech for any academic occasion.</li>
+                        <li>Explain techniques for staying calm while answering questions in public speaking.</li>
+                    </ol>
+                </div>
+
+                <div class="question-unit">
+                    <h3>UNIT - V: Public Speaking & Non-Verbal Delivery</h3>
+                    <ol>
+                        <li>Discuss body language and its impact on audience perception.</li>
+                        <li>Explain facial expressions, kinesics, oculesics, and eye contact.</li>
+                        <li>Discuss voice modulation and paralanguage in public speaking.</li>
+                        <li>Explain proxemics, haptics, and chronomics in communication.</li>
+                        <li>Discuss the role of AI tools in improving public speaking skills.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- UNIT I -->
+            <section class="unit-section active" id="unit1">
+                <h2 style="color:var(--primary); margin-bottom:1.2rem;">UNIT â€“ I: Introduction to Academic Writing</h2>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">1</span>What is academic writing? Explain its types and features.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Definition:</strong> Academic writing is a formal, structured mode of writing used in universities and scholarly publications. It aims to inform, analyse, or persuade an educated audience using evidence, logical reasoning, and precise language.</p>
+                        <p><strong>Types (with quick memory cues):</strong></p>
+                        <ul>
+                            <li><strong>ðŸ“„ Descriptive</strong> â€“ States facts or summaries (e.g., a lab report). <em>Key word: â€œwhatâ€.</em></li>
+                            <li><strong>ðŸ” Analytical</strong> â€“ Breaks down ideas, compares, finds patterns (e.g., essay analysing themes). <em>â€œhow/whyâ€.</em></li>
+                            <li><strong>ðŸ—£ï¸ Persuasive/Argumentative</strong> â€“ Takes a stance and defends it with evidence (e.g., argument essay). <em>â€œconvinceâ€.</em></li>
+                            <li><strong>âš–ï¸ Critical</strong> â€“ Evaluates multiple viewpoints and judges merit (e.g., critique of a study). <em>â€œevaluate & judgeâ€.</em></li>
+                            <li><strong>ðŸ“– Expository</strong> â€“ Explains or informs without personal opinion (e.g., textbook chapter). <em>â€œexplainâ€.</em></li>
+                        </ul>
+                        <p><strong>Key Features (mnemonic: â€œF O R M A Lâ€):</strong></p>
+                        <ul>
+                            <li><strong>F</strong>ormal tone â€“ no slang, contractions, or colloquialisms.</li>
+                            <li><strong>O</strong>bjective â€“ based on evidence, not personal feelings.</li>
+                            <li><strong>R</strong>eferenced â€“ cites sources to avoid plagiarism.</li>
+                            <li><strong>M</strong>eticulous structure â€“ clear introduction, body, conclusion.</li>
+                            <li><strong>A</strong>ccurate & precise â€“ uses specific terminology.</li>
+                            <li><strong>L</strong>ogical flow â€“ coherent paragraphs with transitions.</li>
+                        </ul>
+                        <div class="highlight-box">ðŸ’¡ <strong>Exam tip:</strong> Mention both types and features separately. Use examples for each type to fetch full marks.</div>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">2</span>Explain transition words and their role in academic writing.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Transition words</strong> (linking words) connect sentences and paragraphs, showing logical relationships. They make writing <strong>coherent</strong> and <strong>smooth</strong>.</p>
+                        <p><strong>Major categories with examples (remember: â€œA C C E S Sâ€):</strong></p>
+                        <ul>
+                            <li><strong>A</strong>ddition: furthermore, moreover, in addition, also</li>
+                            <li><strong>C</strong>ontrast: however, on the other hand, conversely, nevertheless</li>
+                            <li><strong>C</strong>ause/Effect: therefore, consequently, thus, as a result</li>
+                            <li><strong>E</strong>xample/Illustration: for instance, namely, to illustrate</li>
+                            <li><strong>S</strong>equence: firstly, subsequently, finally, meanwhile</li>
+                            <li><strong>S</strong>ummary/Conclusion: in conclusion, to sum up, overall</li>
+                        </ul>
+                        <p><strong>Role in academic writing:</strong></p>
+                        <ul>
+                            <li>âœ”ï¸ Guide the reader through the argument.</li>
+                            <li>âœ”ï¸ Eliminate abrupt jumps between ideas.</li>
+                            <li>âœ”ï¸ Strengthen persuasive power by clarifying logic.</li>
+                            <li>âœ”ï¸ Increase readability and professional tone.</li>
+                        </ul>
+                        <div class="highlight-box">âš ï¸ Overusing â€œhoweverâ€ or â€œthereforeâ€ in every sentence sounds mechanical. Vary your choices.</div>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">3</span>Differentiate between analytical writing and critical writing.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th>Aspect</th><th>Analytical Writing</th><th>Critical Writing</th></tr>
+                            <tr><td>Focus</td><td>Breaks down into components</td><td>Evaluates and judges those components</td></tr>
+                            <tr><td>Question</td><td>How? What are the parts?</td><td>So what? Is it valid? What are the biases?</td></tr>
+                            <tr><td>Voice</td><td>Neutral, explanatory</td><td>Evaluative, questioning</td></tr>
+                            <tr><td>Outcome</td><td>Organised understanding</td><td>Reasoned judgement or critique</td></tr>
+                            <tr><td>Example</td><td>Analysing narrative structure of a novel</td><td>Critiquing whether that structure effectively supports the theme</td></tr>
+                        </table>
+                        <p><strong>Memory shortcut:</strong> <em>â€œAnalysis breaks it; criticism judges it.â€</em></p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">4</span>Explain the stages/process of writing with examples.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Five stages (mnemonic: â€œP D R E Pâ€ â€“ Plan, Draft, Revise, Edit, Proofread):</strong></p>
+                        <ol>
+                            <li><strong>ðŸ“ Planning (Prewriting):</strong> Brainstorm, research, outline. <em>Ex:</em> Mindâ€‘map causes of climate change.</li>
+                            <li><strong>âœï¸ Drafting:</strong> Write the first version without worrying about perfection. <em>Ex:</em> Pour ideas into paragraphs.</li>
+                            <li><strong>ðŸ” Revising:</strong> Review content, structure, and argument strength. <em>Ex:</em> Reorder paragraphs, add counterâ€‘argument.</li>
+                            <li><strong>âœ‚ï¸ Editing:</strong> Refine grammar, word choice, sentence flow. <em>Ex:</em> Replace â€œgoodâ€ with â€œbeneficialâ€.</li>
+                            <li><strong>ðŸ”Ž Proofreading:</strong> Final surface check for typos and punctuation. <em>Ex:</em> Read aloud to catch missing commas.</li>
+                        </ol>
+                        <p>These stages are recursive â€“ you may loop back at any time.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">5</span>Describe your favourite incident or happiest moment in life.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Model reflective response (use this structure):</strong></p>
+                        <ul>
+                            <li><strong>Setting:</strong> University convocation, auditorium full of scholars and families.</li>
+                            <li><strong>The event:</strong> My name called for â€œBest Research Paperâ€ award â€“ disbelief, then joy.</li>
+                            <li><strong>Emotions:</strong> Heart racing, parentsâ€™ proud faces, overwhelming gratitude.</li>
+                            <li><strong>Why it mattered:</strong> It validated months of hard work, lateâ€‘night revisions, and persistence.</li>
+                            <li><strong>Lesson:</strong> Achievement is sweeter when shared; perseverance always pays off.</li>
+                        </ul>
+                        <p><em>Write your own version using similar vivid details and a clear narrative arc.</em></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UNIT II -->
+            <section class="unit-section" id="unit2">
+                <h2 style="color:var(--primary); margin-bottom:1.2rem;">UNIT â€“ II: Academic Journal Article</h2>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">1</span>Differentiate between summarizing and paraphrasing with examples.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th></th><th>Summarizing</th><th>Paraphrasing</th></tr>
+                            <tr><td>Length</td><td>Much shorter</td><td>About the same length</td></tr>
+                            <tr><td>Detail</td><td>Only main ideas</td><td>All key points restated</td></tr>
+                            <tr><td>Purpose</td><td>Give a quick overview</td><td>Integrate source without quoting</td></tr>
+                        </table>
+                        <p><strong>Example:</strong><br><em>Original:</em> â€œClimate change, driven by human emissions, threatens coastlines and biodiversity.â€<br><em>Summary:</em> Humanâ€‘caused climate change endangers nature.<br><em>Paraphrase:</em> Global warming resulting from anthropogenic greenhouse gases poses risks to shorelines and species.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">2</span>Explain abstract writing and research project proposal writing.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Abstract:</strong> 150â€“300 word summary of a paper. Must include: problem, method, key results, conclusion. Two types: descriptive (scope only) and informative (results included).</p>
+                        <p><strong>Research Proposal:</strong> A detailed plan before conducting research. Structure:</p>
+                        <ul>
+                            <li>ðŸ“Œ Title â€“ clear, descriptive</li>
+                            <li>ðŸ“Œ Introduction â€“ background & significance</li>
+                            <li>ðŸ“Œ Research questions/hypotheses</li>
+                            <li>ðŸ“Œ Literature review â€“ existing work & gaps</li>
+                            <li>ðŸ“Œ Methodology â€“ design, sample, data collection, analysis</li>
+                            <li>ðŸ“Œ Timeline & budget</li>
+                            <li>ðŸ“Œ Expected outcomes & contribution</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">3</span>Explain qualitative and quantitative research methods.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th>Qualitative</th><th>Quantitative</th></tr>
+                            <tr><td>Explores meanings, experiences</td><td>Measures variables, tests hypotheses</td></tr>
+                            <tr><td>Data: words, narratives</td><td>Data: numbers, statistics</td></tr>
+                            <tr><td>Methods: interviews, focus groups</td><td>Methods: surveys, experiments</td></tr>
+                            <tr><td>Small, purposive sample</td><td>Large, randomised sample</td></tr>
+                            <tr><td>Rich, deep understanding</td><td>Generalizable, statistical results</td></tr>
+                        </table>
+                        <p><strong>Mixed methods</strong> combine both for completeness.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">4</span>Discuss citation styles with examples of APA, MLA, and IEEE formats.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th>Style</th><th>Field</th><th>Inâ€‘text</th><th>Reference Example</th></tr>
+                            <tr><td>APA 7</td><td>Social sciences</td><td>(Smith, 2023, p.45)</td><td>Smith, J. (2023). <em>Title</em>. Publisher.</td></tr>
+                            <tr><td>MLA 9</td><td>Humanities</td><td>(Smith 45)</td><td>Smith, John. <em>Title</em>. Publisher, 2023.</td></tr>
+                            <tr><td>IEEE</td><td>Engineering</td><td>[1]</td><td>[1] J. Smith, <em>Title</em>. City: Publisher, 2023.</td></tr>
+                        </table>
+                        <p><strong>Key difference:</strong> APA highlights date; MLA highlights page; IEEE uses numbers.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">5</span>Differentiate between conference papers and journal articles.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th>Feature</th><th>Conference Paper</th><th>Journal Article</th></tr>
+                            <tr><td>Review</td><td>Faster, less rigorous</td><td>Doubleâ€‘blind, rigorous</td></tr>
+                            <tr><td>Length</td><td>4â€“10 pages</td><td>15â€“30+ pages</td></tr>
+                            <tr><td>Content</td><td>Preliminary/ongoing work</td><td>Complete, validated research</td></tr>
+                            <tr><td>Prestige</td><td>Varies</td><td>Generally higher</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">6</span>Explain editing, proofreading, and plagiarism.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Editing:</strong> Revising content, structure, style, and clarity. Improves flow and argument.</p>
+                        <p><strong>Proofreading:</strong> Final check for typos, spelling, punctuation. Surfaceâ€‘level polish.</p>
+                        <p><strong>Plagiarism:</strong> Using othersâ€™ work without credit. Types: direct, mosaic, selfâ€‘plagiarism. <strong>Prevention:</strong> cite properly, paraphrase, use detection tools. Consequence: academic penalties.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">7</span>Explain internship application writing and its importance.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Components:</strong> Cover letter (tailored, shows enthusiasm), resume/CV (clean, education, projects), and sometimes a statement of interest.</p>
+                        <p><strong>Importance:</strong> It is often the <em>only</em> factor for getting an interview. Reflects communication skills, professionalism, and attention to detail â€“ all highly valued by employers.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UNIT III -->
+            <section class="unit-section" id="unit3">
+                <h2 style="color:var(--primary); margin-bottom:1.2rem;">UNIT â€“ III: Essay & Writing Reviews</h2>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">1</span>Write a compare and contrast essay on traditional classroom vs online education.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Model essay (points outline):</strong></p>
+                        <ul>
+                            <li><strong>Introduction:</strong> Two dominant modes; both aim to educate but differ in delivery.</li>
+                            <li><strong>Similarities:</strong> Both need structured curriculum, qualified instructors, assessments, and student commitment.</li>
+                            <li><strong>Differences:</strong> Traditional offers faceâ€‘toâ€‘face interaction, immediate feedback, social discipline. Online provides flexibility, selfâ€‘paced learning, lower cost but demands selfâ€‘motivation.</li>
+                            <li><strong>Conclusion:</strong> Choice depends on learning style; blended approach often ideal.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">2</span>Write an argumentative essay on the impact of technology or AI on society.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Model essay (pointâ€‘wise):</strong></p>
+                        <ul>
+                            <li><strong>Thesis:</strong> AIâ€™s net impact is positive if guided by regulation.</li>
+                            <li><strong>Arguments for:</strong> Boosts productivity, reduces errors, advances medicine/climate science.</li>
+                            <li><strong>Counterargument:</strong> Job displacement, bias, privacy erosion.</li>
+                            <li><strong>Rebuttal:</strong> History shows new jobs emerge; reskilling and ethical standards mitigate risks.</li>
+                            <li><strong>Conclusion:</strong> Embrace AI with governance, not fear.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">3</span>Differentiate between argumentative, expository, and exploratory essays.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th>Type</th><th>Purpose</th><th>Stance</th></tr>
+                            <tr><td>Argumentative</td><td>Persuade reader to accept a position</td><td>Clear side, defends with evidence</td></tr>
+                            <tr><td>Expository</td><td>Explain or inform neutrally</td><td>Objective, no opinion</td></tr>
+                            <tr><td>Exploratory</td><td>Explore problem without solving</td><td>Openâ€‘ended, multiple views</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">4</span>Explain tone and style in essay writing.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Tone:</strong> Writerâ€™s attitude â€“ formal, serious, humorous, critical. In academic essays, tone is <strong>formal, respectful, objective</strong>.</p>
+                        <p><strong>Style:</strong> Word choice, sentence structure, voice. Academic style values <strong>clarity, precision, conciseness</strong>. Avoid jargon without explanation, and keep sentences clear.</p>
+                        <p><strong>Tip:</strong> Read aloud to check if tone and style match purpose.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">5</span>Explain book/film review writing and synopsis writing.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Review structure:</strong> introduction (title, creator), short summary (no spoilers), analysis (themes, style, strengths/weaknesses), evaluation, conclusion & rating.</p>
+                        <p><strong>Synopsis:</strong> A brief, neutral plot summary (1â€‘2 paragraphs) that includes the ending. Descriptive only â€“ no opinion.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">6</span>What is SOP (Statement of Purpose)? Explain its structure and importance.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>SOP</strong> â€“ a personal essay for graduate/internship applications showing your journey, motivation, and fit.</p>
+                        <p><strong>Structure (6 parts):</strong></p>
+                        <ol>
+                            <li>Hook â€“ captivating anecdote or insight.</li>
+                            <li>Academic background â€“ relevant courses, projects.</li>
+                            <li>Professional experience â€“ internships, jobs.</li>
+                            <li>Why this program â€“ specific faculty, resources.</li>
+                            <li>Future goals â€“ shortâ€‘term and longâ€‘term.</li>
+                            <li>Conclusion â€“ confident, tying everything together.</li>
+                        </ol>
+                        <p><strong>Importance:</strong> Often the deciding factor when grades are similar; shows writing ability and genuine passion.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UNIT IV -->
+            <section class="unit-section" id="unit4">
+                <h2 style="color:var(--primary); margin-bottom:1.2rem;">UNIT â€“ IV: Public Speaking</h2>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">1</span>Explain the role of confidence and clarity in public speaking.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Confidence:</strong> Builds credibility. Conveyed through steady eye contact, open posture, deliberate gestures, and calm pace. Even if nervous, appearing assured makes the audience trust you.</p>
+                        <p><strong>Clarity:</strong> Ensures message is understood. Articulate words, logical structure, simple language, and signposting (â€œfirstâ€, â€œin conclusionâ€).</p>
+                        <p><strong>Together:</strong> Confidence without clarity sounds arrogant; clarity without confidence sounds weak. Master both = commanding presence.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">2</span>Explain stage dynamics and public speaking strategies.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Stage dynamics:</strong> Purposeful movement, power stance, proximity to audience. Move when transitioning points; stand still for emphasis.</p>
+                        <p><strong>Strategies:</strong> 3Ts (Tell them, tell them, tell them), storytelling, rhetorical devices (rule of three, analogies), audience engagement (polls, eye contact), visual aids that complement speech.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">3</span>Explain speech analysis and public speaking as a performative act.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Speech analysis:</strong> Systematic examination of content, structure, delivery, rhetorical appeals (ethos, pathos, logos), and audience impact.</p>
+                        <p><strong>Performative act:</strong> Speaking does more than inform â€“ it performs actions (inspire, persuade, declare). The speakerâ€™s body, voice, and timing coâ€‘create meaning; every delivery is a unique performance.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">4</span>Explain the 4Ps of presentation.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <ol>
+                            <li><strong>Plan:</strong> Objective, audience, research, structure.</li>
+                            <li><strong>Prepare:</strong> Visuals, rehearsal, logistics.</li>
+                            <li><strong>Practice:</strong> Run through aloud, time yourself, get feedback.</li>
+                            <li><strong>Present:</strong> Deliver with energy, connect, adapt, handle nerves.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">5</span>Differentiate between academic and non-academic speech.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <table>
+                            <tr><th>Academic</th><th>Non-Academic</th></tr>
+                            <tr><td>Formal, evidenceâ€‘based</td><td>Casual, emotional, humorous</td></tr>
+                            <tr><td>Technical vocabulary</td><td>Everyday language</td></tr>
+                            <tr><td>Rigid structure (IMRaD)</td><td>Flexible, storyâ€‘driven</td></tr>
+                            <tr><td>Expert audience</td><td>General public</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">6</span>Write a vote of thanks speech for any academic occasion.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Model speech:</strong></p>
+                        <p>"Respected dignitaries, faculty, and dear friends â€“ as we conclude this enlightening seminar, I extend heartfelt gratitude. To our chief guest for an inspiring keynote, to all speakers for their valuable insights, to the organising team for flawless execution, and to every participant for engaging so actively. Your presence made this event a grand success. Thank you, and safe travels."</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">7</span>Explain techniques for staying calm while answering questions in public speaking.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li>â¸ï¸ Pause before answering â€“ 2â€‘3 seconds to breathe and think.</li>
+                            <li>ðŸ”„ Reframe nervousness as excitement.</li>
+                            <li>ðŸ‘‚ Listen fully; repeat/rephrase the question to buy time.</li>
+                            <li>ðŸ¤· Itâ€™s okay to say â€œI donâ€™t know, but Iâ€™ll follow upâ€.</li>
+                            <li>ðŸ§˜ Ground yourself â€“ feel your feet, take a sip of water.</li>
+                            <li>ðŸ“‹ Prepare likely questions beforehand.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UNIT V -->
+            <section class="unit-section" id="unit5">
+                <h2 style="color:var(--primary); margin-bottom:1.2rem;">UNIT â€“ V: Public Speaking & Non-Verbal Delivery</h2>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">1</span>Discuss body language and its impact on audience perception.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p>Body language (posture, gestures, stance) communicates over 55% of emotional meaning. Open, upright posture signals confidence; slouching or crossed arms signal disinterest. Gestures aligned with words reinforce the message, while fidgeting distracts. First impressions form within seconds â€“ purposeful, expansive movements command attention and trust.</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">2</span>Explain facial expressions, kinesics, oculesics, and eye contact.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Facial expressions:</strong> Match content â€“ smile for warmth, furrowed brows for seriousness.</li>
+                            <li><strong>Kinesics:</strong> Study of body movement â€“ emblems, illustrators, regulators, adaptors.</li>
+                            <li><strong>Oculesics:</strong> Eye behaviour â€“ scanning the audience creates connection.</li>
+                            <li><strong>Eye contact:</strong> 3â€‘5 seconds per person/section; use lighthouse technique for large groups.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">3</span>Discuss voice modulation and paralanguage in public speaking.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p><strong>Voice modulation:</strong> Vary pitch, pace, volume, and pause. Higher pitch for excitement, lower for authority; slow for key points; strategic silence adds weight.</p>
+                        <p><strong>Paralanguage:</strong> Vocal elements beyond words â€“ tone, rhythm, loudness, sighs, fillers. Conveys emotion; same words with different paralanguage can mean sincerity or sarcasm. Minimise fillers (â€œumâ€, â€œuhâ€).</p>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">4</span>Explain proxemics, haptics, and chronomics in communication.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>Proxemics:</strong> Use of space â€“ intimate, personal, social, public zones. In speeches, stay in public zone but move closer for Q&A.</li>
+                            <li><strong>Haptics:</strong> Communication through touch â€“ mainly handshakes; a firm handshake conveys confidence.</li>
+                            <li><strong>Chronomics:</strong> Use of time â€“ punctuality, speech duration, pace. Starting and ending on time shows respect.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-card">
+                    <div class="accordion-header" onclick="toggleAccordion(this)"><span class="q-icon">5</span>Discuss the role of AI tools in improving public speaking skills.<span class="arrow">â–¼</span></div>
+                    <div class="accordion-body">
+                        <p>AI tools provide realâ€‘time, objective feedback:</p>
+                        <ul>
+                            <li><strong>Speech analysers</strong> (Orai, Yoodli) â€“ track pace, fillers, clarity.</li>
+                            <li><strong>VR simulation</strong> â€“ practice in virtual auditoriums to reduce anxiety.</li>
+                            <li><strong>AI writing assistants</strong> â€“ help structure speeches.</li>
+                            <li><strong>Realâ€‘time teleprompters</strong> with pace cues.</li>
+                        </ul>
+                        <p>Best used as a supplement to human coaching and realâ€‘world practice.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const LOGIN_STORAGE_KEY = 'academicPowerPortalLoggedIn';
+
+        function saveLoginStatus() {
+            try {
+                localStorage.setItem(LOGIN_STORAGE_KEY, 'true');
+            } catch (error) {
+                console.warn('Login storage is not available:', error);
+            }
+        }
+
+        function restoreLoginStatus() {
+            try {
+                if (localStorage.getItem(LOGIN_STORAGE_KEY) === 'true') {
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                }
+            } catch (error) {
+                console.warn('Login storage is not available:', error);
+            }
+        }
+
+        const enhancedAnswers = [
+            {
+                seed: 'writing1',
+                alt: 'Academic writing concept',
+                caption: 'Academic writing uses formal language, clear structure, and evidence.',
+                intro: 'Academic writing is a formal style of writing used in colleges, universities, research work, and scholarly communication. It presents ideas logically with evidence, examples, and references.',
+                points: [
+                    '<strong>Purpose:</strong> To inform, explain, analyze, evaluate, or argue about a topic in a clear and reliable way.',
+                    '<strong>Descriptive writing:</strong> Gives facts, definitions, features, and background information. Example: describing the causes of pollution.',
+                    '<strong>Analytical writing:</strong> Breaks a topic into parts and explains relationships. Example: analyzing the themes of a novel.',
+                    '<strong>Argumentative writing:</strong> Takes a position and supports it with reasons and evidence. Example: arguing that online education should be blended with classroom teaching.',
+                    '<strong>Critical writing:</strong> Evaluates ideas, compares viewpoints, and judges strengths and weaknesses.',
+                    '<strong>Research writing:</strong> Uses data, sources, citations, and a systematic method to present findings.',
+                    '<strong>Main features:</strong> Formal tone, objective view, logical order, paragraph unity, precise vocabulary, citations, and a clear conclusion.',
+                    '<strong>Paragraph structure:</strong> Topic sentence, explanation, evidence/example, and link to the next idea.'
+                ],
+                memory: 'FORMAL = Formal tone, Objective view, Referenced sources, Meaningful structure, Accurate words, Logical flow.',
+                exam: 'Academic writing is important because it trains students to think clearly, use evidence responsibly, and communicate ideas in a scholarly manner.'
+            },
+            {
+                seed: 'transition',
+                alt: 'Transition words bridge ideas',
+                caption: 'Transition words connect sentences and paragraphs smoothly.',
+                intro: 'Transition words are linking words or phrases that show the relationship between ideas. They guide the reader from one point to another without confusion.',
+                points: [
+                    '<strong>Addition:</strong> moreover, furthermore, in addition, also. Use these to add another point.',
+                    '<strong>Contrast:</strong> however, on the other hand, nevertheless, whereas. Use these to show difference.',
+                    '<strong>Cause and effect:</strong> therefore, hence, as a result, consequently. Use these to show result.',
+                    '<strong>Examples:</strong> for example, for instance, to illustrate, namely. Use these before supporting examples.',
+                    '<strong>Sequence:</strong> firstly, secondly, next, finally. Use these to arrange steps or arguments.',
+                    '<strong>Comparison:</strong> similarly, likewise, in the same way. Use these to connect similar ideas.',
+                    '<strong>Conclusion:</strong> in conclusion, to sum up, overall, thus. Use these to close the discussion.',
+                    '<strong>Role:</strong> They improve coherence, reduce sudden jumps, and make an answer look organized.'
+                ],
+                memory: 'ACCESS = Addition, Contrast, Cause, Example, Sequence, Summary.',
+                exam: 'Transition words act like bridges in academic writing; they help the reader follow the writer\'s argument clearly and logically.'
+            },
+            {
+                seed: 'analytical',
+                alt: 'Analytical and critical writing comparison',
+                caption: 'Analytical writing explains parts; critical writing evaluates their value.',
+                intro: 'Analytical writing and critical writing are higher-level academic writing types. Both need evidence, but their purpose is different.',
+                points: [
+                    '<strong>Analytical writing meaning:</strong> It breaks a topic into smaller parts and explains how those parts work together.',
+                    '<strong>Critical writing meaning:</strong> It evaluates ideas by judging strengths, weaknesses, assumptions, and usefulness.',
+                    '<strong>Analytical focus:</strong> asks how and why something happens.',
+                    '<strong>Critical focus:</strong> asks how far something is valid, reliable, or convincing.',
+                    '<strong>Analytical example:</strong> explaining how imagery, setting, and characters create mood in a story.',
+                    '<strong>Critical example:</strong> judging whether a research article has strong evidence and fair conclusions.',
+                    '<strong>Analytical writing language:</strong> explains, compares, classifies, and interprets.',
+                    '<strong>Critical writing language:</strong> evaluates, questions, justifies, agrees, disagrees, and recommends.'
+                ],
+                extra: [
+                    {
+                        title: 'Easy Difference',
+                        body: '<p><strong>Analytical:</strong> What are the parts and how do they connect?</p><p><strong>Critical:</strong> How good, useful, or reliable are those parts?</p>'
+                    }
+                ],
+                memory: 'A = Analyze parts. C = Critically judge quality.',
+                exam: 'Thus, analytical writing explains a subject deeply, while critical writing goes one step further by making a reasoned judgement.'
+            },
+            {
+                seed: 'writingprocess',
+                alt: 'Writing process steps',
+                caption: 'Good writing develops through planning, drafting, revising, and polishing.',
+                intro: 'Writing is not a one-time activity. It is a process in which ideas are planned, written, improved, and corrected before final submission.',
+                points: [
+                    '<strong>Prewriting:</strong> Choose the topic, understand the question, brainstorm ideas, and collect information.',
+                    '<strong>Planning:</strong> Prepare an outline with introduction, main points, examples, and conclusion.',
+                    '<strong>Drafting:</strong> Write the first version without worrying too much about perfection.',
+                    '<strong>Revising:</strong> Improve content, order of ideas, paragraph unity, and clarity of argument.',
+                    '<strong>Editing:</strong> Correct sentence structure, word choice, tone, and academic style.',
+                    '<strong>Proofreading:</strong> Check spelling, punctuation, grammar, numbering, and formatting.',
+                    '<strong>Referencing:</strong> Add citations and bibliography if sources are used.',
+                    '<strong>Final submission:</strong> Read once as a reader and ensure the answer is complete.'
+                ],
+                extra: [
+                    {
+                        title: 'Example',
+                        body: '<p>For an essay on online education, first list points, then arrange them as benefits and limitations, draft paragraphs, revise examples, edit language, and finally proofread before submission.</p>'
+                    }
+                ],
+                memory: 'PPDREP = Prewrite, Plan, Draft, Revise, Edit, Proofread.',
+                exam: 'The writing process helps students produce clear, correct, and well-organized academic work.'
+            },
+            {
+                seed: 'happymoment',
+                alt: 'Happy personal memory',
+                caption: 'A personal incident becomes powerful when it has setting, feelings, and reflection.',
+                intro: 'A descriptive answer about a happy moment should include the place, people, event, emotions, and lesson learned. It should feel personal but remain clear and well organized.',
+                points: [
+                    '<strong>Opening:</strong> One of the happiest moments of my life was the day I received appreciation for my hard work in front of my classmates.',
+                    '<strong>Setting:</strong> It happened during a college academic event where students were recognized for their performance and participation.',
+                    '<strong>Build-up:</strong> I had worked sincerely for many days, preparing, practicing, and improving myself even when I felt nervous.',
+                    '<strong>Main incident:</strong> When my name was announced, I felt surprised and emotional because my effort had finally been noticed.',
+                    '<strong>Feelings:</strong> I felt proud, grateful, and confident. The applause from teachers and friends made the moment unforgettable.',
+                    '<strong>Family/friends:</strong> Sharing the news with my family made the happiness even greater because they had supported me throughout.',
+                    '<strong>Lesson:</strong> The incident taught me that patience, preparation, and self-belief always give results.',
+                    '<strong>Closing:</strong> Even today, that memory motivates me whenever I face a difficult task.'
+                ],
+                memory: 'SPFLC = Setting, Preparation, Feeling, Lesson, Conclusion.',
+                exam: 'A happy incident is not only about joy; it becomes meaningful when it changes our confidence and teaches us a lesson.'
+            },
+            {
+                seed: 'summarize',
+                alt: 'Summarizing and paraphrasing',
+                caption: 'Summarizing shortens the idea; paraphrasing rewrites it in new words.',
+                intro: 'Summarizing and paraphrasing are academic writing skills used to present source information without copying. Both require understanding and proper citation.',
+                points: [
+                    '<strong>Summarizing meaning:</strong> It gives only the main idea of a long passage in a shorter form.',
+                    '<strong>Paraphrasing meaning:</strong> It rewrites the same idea in different words and sentence structure, usually with similar length.',
+                    '<strong>Purpose of summary:</strong> To reduce large information into key points.',
+                    '<strong>Purpose of paraphrase:</strong> To explain a specific idea clearly in one\'s own words.',
+                    '<strong>Length:</strong> A summary is much shorter; a paraphrase can be close to the original length.',
+                    '<strong>Details:</strong> Summary removes examples and minor details; paraphrase keeps important details.',
+                    '<strong>Citation:</strong> Both need citation when the idea comes from another source.',
+                    '<strong>Plagiarism warning:</strong> Changing only a few words is not paraphrasing; the full sentence structure must change.'
+                ],
+                extra: [
+                    {
+                        title: 'Example',
+                        body: '<p><strong>Original:</strong> Regular reading improves vocabulary and writing ability.</p><p><strong>Summary:</strong> Reading improves language skills.</p><p><strong>Paraphrase:</strong> Students who read often develop better word power and stronger writing.</p>'
+                    }
+                ],
+                memory: 'Summary = short main idea. Paraphrase = same idea, new expression.',
+                exam: 'Both skills help writers use sources ethically and show that they have understood the material.'
+            },
+            {
+                seed: 'abstract',
+                alt: 'Abstract and research proposal',
+                caption: 'An abstract summarizes a study; a proposal plans a study.',
+                intro: 'Abstract writing and research proposal writing are important parts of academic research. An abstract comes with a completed paper, while a proposal is written before the research begins.',
+                points: [
+                    '<strong>Abstract meaning:</strong> A short summary of a research paper, usually 150-250 words.',
+                    '<strong>Abstract content:</strong> Background, aim, method, major findings, and conclusion.',
+                    '<strong>Abstract purpose:</strong> It helps readers quickly decide whether the article is useful for them.',
+                    '<strong>Proposal meaning:</strong> A plan that explains what research will be done, why it matters, and how it will be conducted.',
+                    '<strong>Proposal content:</strong> Title, introduction, research problem, objectives, literature review, methodology, timeline, and references.',
+                    '<strong>Proposal purpose:</strong> It seeks approval, guidance, or funding for a research project.',
+                    '<strong>Style:</strong> Both should be clear, concise, formal, and focused.',
+                    '<strong>Difference:</strong> Abstract reports completed work; proposal promises planned work.'
+                ],
+                memory: 'Abstract = past/completed research. Proposal = future/planned research.',
+                exam: 'A strong abstract attracts readers, while a strong proposal convinces supervisors that the project is valuable and possible.'
+            },
+            {
+                seed: 'researchmethods',
+                alt: 'Qualitative and quantitative research',
+                caption: 'Qualitative research studies meaning; quantitative research measures numbers.',
+                intro: 'Research methods are systematic ways of collecting and analyzing information. Qualitative and quantitative methods are two major approaches.',
+                points: [
+                    '<strong>Qualitative research:</strong> Studies experiences, opinions, behavior, culture, and meaning.',
+                    '<strong>Qualitative data:</strong> Words, interviews, observations, case studies, and open-ended responses.',
+                    '<strong>Qualitative aim:</strong> To understand why and how people think or behave.',
+                    '<strong>Quantitative research:</strong> Studies measurable facts using numbers and statistics.',
+                    '<strong>Quantitative data:</strong> Surveys, scores, percentages, experiments, and numerical measurements.',
+                    '<strong>Quantitative aim:</strong> To test hypotheses, measure variables, and find patterns.',
+                    '<strong>Example qualitative:</strong> Interviewing students about their online learning experience.',
+                    '<strong>Example quantitative:</strong> Surveying 500 students and calculating the percentage who prefer online learning.'
+                ],
+                extra: [
+                    {
+                        title: 'Mixed Method',
+                        body: '<p>Some studies combine both methods. For example, a researcher may collect survey numbers and also interview selected students for deeper explanation.</p>'
+                    }
+                ],
+                memory: 'Quality = words and meaning. Quantity = numbers and measurement.',
+                exam: 'Both methods are useful; the best method depends on the research question and type of data needed.'
+            },
+            {
+                seed: 'citationstyles',
+                alt: 'Academic citation styles',
+                caption: 'Citation styles give credit and help readers trace sources.',
+                intro: 'Citation is the practice of acknowledging sources used in academic writing. It prevents plagiarism and gives credibility to the answer.',
+                points: [
+                    '<strong>APA style:</strong> Common in social sciences, education, psychology, and management.',
+                    '<strong>APA in-text example:</strong> (Kumar, 2024).',
+                    '<strong>APA reference example:</strong> Kumar, R. (2024). Academic Writing Skills. Oxford Press.',
+                    '<strong>MLA style:</strong> Common in literature, language, and humanities.',
+                    '<strong>MLA in-text example:</strong> (Kumar 45).',
+                    '<strong>MLA works cited example:</strong> Kumar, Ravi. Academic Writing Skills. Oxford Press, 2024.',
+                    '<strong>IEEE style:</strong> Common in engineering, technology, and computer science.',
+                    '<strong>IEEE example:</strong> In text use [1]. Reference: [1] R. Kumar, Academic Writing Skills. Oxford Press, 2024.'
+                ],
+                memory: 'APA = Author + year. MLA = Author + page. IEEE = Numbered references.',
+                exam: 'Citation styles may differ in format, but all of them give credit, support evidence, and protect academic honesty.'
+            },
+            {
+                seed: 'conference',
+                alt: 'Conference paper and journal article',
+                caption: 'Conference papers are presented quickly; journal articles are published after deeper review.',
+                intro: 'Conference papers and journal articles are both academic publications, but they differ in purpose, length, review process, and audience.',
+                points: [
+                    '<strong>Conference paper:</strong> Written for presentation at a seminar, symposium, or conference.',
+                    '<strong>Journal article:</strong> Written for publication in a scholarly journal.',
+                    '<strong>Length:</strong> Conference papers are usually shorter; journal articles are longer and more detailed.',
+                    '<strong>Purpose:</strong> Conference papers share early findings; journal articles present complete and polished research.',
+                    '<strong>Review:</strong> Conference review may be faster; journal peer review is usually stricter and more detailed.',
+                    '<strong>Audience:</strong> Conference papers are delivered to live academic audiences; journal articles are read by researchers over time.',
+                    '<strong>Feedback:</strong> Conference papers allow immediate questions and suggestions.',
+                    '<strong>Value:</strong> Journal articles usually carry greater academic weight because of detailed peer review.'
+                ],
+                memory: 'Conference = present and discuss. Journal = publish and preserve.',
+                exam: 'Both forms develop academic knowledge, but journal articles are generally more complete, formal, and permanent.'
+            },
+            {
+                seed: 'plagiarism',
+                alt: 'Editing proofreading and plagiarism',
+                caption: 'Editing improves meaning; proofreading removes errors; plagiarism must be avoided.',
+                intro: 'Editing, proofreading, and plagiarism checking are final stages of academic writing. They improve quality and protect academic integrity.',
+                points: [
+                    '<strong>Editing meaning:</strong> Improving content, organization, clarity, tone, paragraph flow, and word choice.',
+                    '<strong>Editing question:</strong> Is my answer clear, complete, logical, and suitable for academic writing?',
+                    '<strong>Proofreading meaning:</strong> Checking surface errors such as spelling, grammar, punctuation, capitalization, and formatting.',
+                    '<strong>Proofreading question:</strong> Are there any small mistakes that reduce marks?',
+                    '<strong>Plagiarism meaning:</strong> Using another person\'s words or ideas without proper credit.',
+                    '<strong>Types of plagiarism:</strong> Copy-paste, patch writing, missing citation, self-plagiarism, and using AI/text without acknowledgement where required.',
+                    '<strong>Avoiding plagiarism:</strong> Paraphrase properly, cite sources, use quotation marks for exact words, and include references.',
+                    '<strong>Importance:</strong> These steps make writing accurate, ethical, and high-scoring.'
+                ],
+                memory: 'Edit for meaning. Proofread for mistakes. Cite to avoid plagiarism.',
+                exam: 'A well-edited and properly referenced answer shows responsibility, accuracy, and academic honesty.'
+            },
+            {
+                seed: 'internship',
+                alt: 'Internship application writing',
+                caption: 'An internship application connects student skills with workplace opportunity.',
+                intro: 'Internship application writing is the formal process of applying for practical training in an organization. It usually includes a cover letter, resume, and sometimes an email.',
+                points: [
+                    '<strong>Purpose:</strong> To convince an organization that the student is suitable for training or work experience.',
+                    '<strong>Opening:</strong> Mention the internship position and how you came to know about it.',
+                    '<strong>Academic background:</strong> State your course, college, year of study, and relevant subjects.',
+                    '<strong>Skills:</strong> Highlight communication, teamwork, technical skills, writing skills, and problem-solving ability.',
+                    '<strong>Experience:</strong> Mention projects, workshops, volunteering, certificates, or part-time work if relevant.',
+                    '<strong>Fit:</strong> Explain why you are interested in that company or field.',
+                    '<strong>Closing:</strong> Request an opportunity for interview or further discussion and thank the reader.',
+                    '<strong>Importance:</strong> It builds professional communication and creates a bridge between education and career.'
+                ],
+                memory: 'A-S-E-F-C = Apply, Skills, Experience, Fit, Close.',
+                exam: 'A good internship application is polite, specific, concise, and focused on how the student can learn and contribute.'
+            },
+            {
+                seed: 'classroomonline',
+                alt: 'Traditional classroom and online education',
+                caption: 'Traditional and online education differ in interaction, flexibility, and learning environment.',
+                intro: 'Traditional classroom education and online education are two major modes of learning. Both aim to provide knowledge, but their methods and student experiences are different.',
+                points: [
+                    '<strong>Introduction point:</strong> Education has changed from only classroom learning to digital platforms, especially after the growth of internet technology.',
+                    '<strong>Similarity:</strong> Both need teachers, learners, syllabus, assignments, assessment, and discipline.',
+                    '<strong>Classroom strength:</strong> Face-to-face interaction helps students ask questions immediately and build social confidence.',
+                    '<strong>Classroom limitation:</strong> It has fixed time, place, and pace, which may not suit every learner.',
+                    '<strong>Online strength:</strong> It gives flexibility, recorded lectures, wider access, and self-paced learning.',
+                    '<strong>Online limitation:</strong> It can suffer from network issues, distraction, lack of personal contact, and low motivation.',
+                    '<strong>Best comparison:</strong> Classroom learning is strong in interaction; online learning is strong in convenience.',
+                    '<strong>Balanced view:</strong> Blended learning combines the discipline of classroom teaching with the flexibility of online tools.'
+                ],
+                extra: [
+                    {
+                        title: 'Model LAQ Flow',
+                        body: '<p>Write one paragraph for introduction, two paragraphs for similarities and differences, one paragraph for advantages/limitations, and one balanced conclusion.</p>'
+                    }
+                ],
+                memory: 'Classroom = contact. Online = convenience. Blended = best of both.',
+                exam: 'Therefore, neither method is completely superior; the best choice depends on learner needs, resources, and learning goals.'
+            },
+            {
+                seed: 'aiimpact',
+                alt: 'Impact of AI on society',
+                caption: 'AI affects education, work, health, communication, and ethics.',
+                intro: 'Technology and artificial intelligence have become powerful forces in modern society. They bring progress and convenience, but they also create ethical and social challenges.',
+                points: [
+                    '<strong>Thesis:</strong> AI has a positive impact when used responsibly, but uncontrolled use can create serious problems.',
+                    '<strong>Education:</strong> AI supports personalized learning, quick feedback, translation, and study assistance.',
+                    '<strong>Healthcare:</strong> AI helps in diagnosis, medical imaging, drug discovery, and patient monitoring.',
+                    '<strong>Employment:</strong> AI increases productivity but may replace repetitive jobs, so reskilling is necessary.',
+                    '<strong>Communication:</strong> Technology connects people globally through social media, video calls, and instant messaging.',
+                    '<strong>Risks:</strong> Privacy loss, misinformation, bias, addiction, and overdependence are major concerns.',
+                    '<strong>Counterargument:</strong> Some people fear AI will reduce human creativity and employment.',
+                    '<strong>Rebuttal:</strong> With regulation, digital literacy, and ethical design, AI can assist humans rather than replace them.'
+                ],
+                extra: [
+                    {
+                        title: 'Argument Essay Structure',
+                        body: '<p>Use this order: introduction, thesis, supporting arguments, counterargument, rebuttal, conclusion.</p>'
+                    }
+                ],
+                memory: 'AI impact = Help, Risk, Control. Use it wisely, regulate it strongly.',
+                exam: 'AI should not be blindly feared or blindly trusted; society must use it with responsibility, fairness, and human values.'
+            },
+            {
+                seed: 'essaytypes',
+                alt: 'Argumentative expository exploratory essays',
+                caption: 'Each essay type has a different purpose and writing method.',
+                intro: 'Argumentative, expository, and exploratory essays are common academic essay types. They differ mainly in purpose, stance, and structure.',
+                points: [
+                    '<strong>Argumentative essay:</strong> Takes a clear position and persuades the reader with reasons and evidence.',
+                    '<strong>Argumentative example:</strong> AI should be regulated to protect society.',
+                    '<strong>Expository essay:</strong> Explains a topic objectively without trying to persuade.',
+                    '<strong>Expository example:</strong> Explain the stages of academic writing.',
+                    '<strong>Exploratory essay:</strong> Investigates a problem from different viewpoints without giving one fixed final answer.',
+                    '<strong>Exploratory example:</strong> Explore whether online education is better than classroom education.',
+                    '<strong>Evidence use:</strong> Argumentative uses evidence to prove; expository uses evidence to explain; exploratory uses evidence to examine.',
+                    '<strong>Tone:</strong> Argumentative is persuasive, expository is neutral, exploratory is open-minded.'
+                ],
+                memory: 'Argue = prove. Expose = explain. Explore = investigate.',
+                exam: 'Choosing the correct essay type helps the writer maintain proper tone, structure, and purpose.'
+            },
+            {
+                seed: 'tone',
+                alt: 'Tone and style in essay writing',
+                caption: 'Tone is attitude; style is the way language is used.',
+                intro: 'Tone and style shape how an essay sounds to the reader. They help the writer communicate ideas appropriately according to purpose and audience.',
+                points: [
+                    '<strong>Tone meaning:</strong> The writer\'s attitude toward the topic and reader.',
+                    '<strong>Academic tone:</strong> Formal, respectful, objective, balanced, and evidence-based.',
+                    '<strong>Examples of tone:</strong> serious, critical, persuasive, informative, reflective, humorous, or emotional.',
+                    '<strong>Style meaning:</strong> The writer\'s choice of words, sentence pattern, paragraph structure, and voice.',
+                    '<strong>Academic style:</strong> Clear, precise, concise, logical, and free from slang.',
+                    '<strong>Avoid:</strong> Overly casual language, contractions, unsupported opinions, emotional exaggeration, and vague words.',
+                    '<strong>Improve style:</strong> Use topic sentences, transitions, examples, and varied but simple sentences.',
+                    '<strong>Importance:</strong> Correct tone and style make an essay professional and convincing.'
+                ],
+                memory: 'Tone = attitude. Style = language method.',
+                exam: 'A high-scoring essay maintains a formal tone and a clear style from introduction to conclusion.'
+            },
+            {
+                seed: 'review',
+                alt: 'Book film review and synopsis',
+                caption: 'A review evaluates; a synopsis summarizes.',
+                intro: 'Book or film review writing and synopsis writing are related but different. A review includes opinion and evaluation, while a synopsis gives a brief summary of the content.',
+                points: [
+                    '<strong>Review meaning:</strong> A critical evaluation of a book, film, or performance.',
+                    '<strong>Review opening:</strong> Mention title, author/director, genre, and main context.',
+                    '<strong>Summary in review:</strong> Give a short overview without revealing unnecessary spoilers.',
+                    '<strong>Analysis:</strong> Discuss theme, characters, plot, language, direction, music, visuals, or message.',
+                    '<strong>Evaluation:</strong> Explain strengths, weaknesses, and overall impact.',
+                    '<strong>Recommendation:</strong> State who should read or watch it and why.',
+                    '<strong>Synopsis meaning:</strong> A brief neutral summary of the plot or content, often including the ending.',
+                    '<strong>Difference:</strong> Review judges quality; synopsis only tells what happens.'
+                ],
+                memory: 'Review = summary + analysis + judgement. Synopsis = short neutral story.',
+                exam: 'A good review is balanced and evaluative, while a good synopsis is clear, brief, and objective.'
+            },
+            {
+                seed: 'sop',
+                alt: 'Statement of purpose structure',
+                caption: 'An SOP explains goals, preparation, and fit.',
+                intro: 'A Statement of Purpose, or SOP, is a personal academic essay written for admission, internship, scholarship, or higher studies. It explains who the applicant is and why they are suitable.',
+                points: [
+                    '<strong>Opening:</strong> Start with motivation, interest, or a meaningful academic experience.',
+                    '<strong>Academic background:</strong> Mention course, subjects, achievements, projects, and learning journey.',
+                    '<strong>Skills and experience:</strong> Add internships, research work, workshops, leadership, or technical skills.',
+                    '<strong>Reason for choice:</strong> Explain why you selected that program, university, company, or field.',
+                    '<strong>Career goals:</strong> State short-term and long-term goals clearly.',
+                    '<strong>Fit:</strong> Connect your goals with the institution\'s strengths or internship opportunity.',
+                    '<strong>Conclusion:</strong> End confidently by showing readiness and commitment.',
+                    '<strong>Importance:</strong> SOP shows personality, motivation, writing ability, and seriousness beyond marks.'
+                ],
+                memory: 'M-A-S-F-G-C = Motivation, Academics, Skills, Fit, Goals, Conclusion.',
+                exam: 'A strong SOP is specific, honest, organized, and future-oriented.'
+            },
+            {
+                seed: 'confidence',
+                alt: 'Confidence and clarity in public speaking',
+                caption: 'Confidence attracts attention; clarity ensures understanding.',
+                intro: 'Confidence and clarity are two essential qualities of effective public speaking. Confidence builds trust, while clarity helps the audience understand the message.',
+                points: [
+                    '<strong>Confidence meaning:</strong> The speaker\'s ability to appear calm, prepared, and sure of the message.',
+                    '<strong>How confidence is shown:</strong> Upright posture, steady eye contact, controlled gestures, and a clear voice.',
+                    '<strong>Importance of confidence:</strong> It creates credibility and makes the audience listen with interest.',
+                    '<strong>Clarity meaning:</strong> The ability to express ideas in simple, organized, and understandable language.',
+                    '<strong>How clarity is shown:</strong> Proper pronunciation, logical order, examples, transitions, and suitable speed.',
+                    '<strong>Problem without confidence:</strong> The speaker may look nervous even if the content is good.',
+                    '<strong>Problem without clarity:</strong> The audience may lose meaning even if the speaker is confident.',
+                    '<strong>Best result:</strong> Confidence and clarity together make a speech powerful and memorable.'
+                ],
+                memory: 'Confidence = trust. Clarity = understanding.',
+                exam: 'An effective speaker must sound confident and speak clearly so that the audience both believes and understands the message.'
+            },
+            {
+                seed: 'stagedynamics',
+                alt: 'Stage dynamics and speaking strategies',
+                caption: 'Stage movement, posture, and audience connection strengthen delivery.',
+                intro: 'Stage dynamics refers to how a speaker uses the stage, body, space, movement, and audience connection during a speech.',
+                points: [
+                    '<strong>Posture:</strong> Stand straight with relaxed shoulders to show confidence.',
+                    '<strong>Movement:</strong> Move purposefully during transitions, but stand still while delivering important points.',
+                    '<strong>Gestures:</strong> Use natural hand movements to support meaning, not distract from it.',
+                    '<strong>Eye contact:</strong> Look at different sections of the audience to create connection.',
+                    '<strong>Voice:</strong> Use proper volume, pace, pause, and emphasis.',
+                    '<strong>Opening strategy:</strong> Start with a question, quote, fact, or short story to gain attention.',
+                    '<strong>Audience strategy:</strong> Use examples relevant to listeners and invite response when suitable.',
+                    '<strong>Closing strategy:</strong> End with a summary, call to action, or memorable final line.'
+                ],
+                memory: 'MOVE = Movement, Openness, Voice, Eye contact.',
+                exam: 'Good stage dynamics convert a speech from simple reading into an engaging live performance.'
+            },
+            {
+                seed: 'speechanalysis',
+                alt: 'Speech analysis and performance',
+                caption: 'Speech analysis studies content, structure, delivery, and audience impact.',
+                intro: 'Speech analysis is the careful study of a speech to understand how effectively it informs, persuades, or inspires an audience.',
+                points: [
+                    '<strong>Content analysis:</strong> Check the main idea, supporting points, examples, and evidence.',
+                    '<strong>Structure analysis:</strong> Study introduction, body, transitions, and conclusion.',
+                    '<strong>Language analysis:</strong> Observe word choice, rhetorical questions, repetition, imagery, and persuasive devices.',
+                    '<strong>Delivery analysis:</strong> Examine voice, eye contact, posture, gestures, facial expressions, and pace.',
+                    '<strong>Audience impact:</strong> Judge whether the speech connects emotionally and intellectually with listeners.',
+                    '<strong>Ethos:</strong> Speaker credibility and character.',
+                    '<strong>Pathos:</strong> Emotional appeal used to move the audience.',
+                    '<strong>Logos:</strong> Logical reasoning and evidence used to support points.'
+                ],
+                extra: [
+                    {
+                        title: 'Public Speaking as Performance',
+                        body: '<p>Public speaking is performative because meaning is created not only by words but also by body, voice, timing, and audience response.</p>'
+                    }
+                ],
+                memory: 'C-S-L-D-A = Content, Structure, Language, Delivery, Audience.',
+                exam: 'Speech analysis helps us understand why some speeches become powerful, persuasive, and memorable.'
+            },
+            {
+                seed: '4ps',
+                alt: 'Four Ps of presentation',
+                caption: 'The 4Ps help speakers move from idea to confident delivery.',
+                intro: 'The 4Ps of presentation are Plan, Prepare, Practice, and Present. They help speakers deliver organized and effective presentations.',
+                points: [
+                    '<strong>Plan:</strong> Understand the topic, audience, purpose, time limit, and main message.',
+                    '<strong>Plan structure:</strong> Arrange introduction, main points, evidence, examples, and conclusion.',
+                    '<strong>Prepare:</strong> Collect content, design slides, check facts, and organize visual aids.',
+                    '<strong>Prepare delivery:</strong> Decide where to pause, emphasize, and use examples.',
+                    '<strong>Practice:</strong> Rehearse aloud, time yourself, improve pronunciation, and reduce fillers.',
+                    '<strong>Practice feedback:</strong> Present before friends or record yourself to identify mistakes.',
+                    '<strong>Present:</strong> Speak with confidence, clarity, eye contact, and audience awareness.',
+                    '<strong>Adapt:</strong> During presentation, adjust speed and explanation according to audience response.'
+                ],
+                memory: '4Ps = Plan the message, Prepare the material, Practice the delivery, Present with confidence.',
+                exam: 'Following the 4Ps makes a presentation systematic, confident, and audience-friendly.'
+            },
+            {
+                seed: 'academicspeech',
+                alt: 'Academic and non academic speech',
+                caption: 'Academic speech is formal and evidence-based; non-academic speech is flexible and everyday.',
+                intro: 'Academic and non-academic speeches differ in audience, purpose, language, structure, and use of evidence.',
+                points: [
+                    '<strong>Academic speech:</strong> Delivered in classrooms, seminars, conferences, or research events.',
+                    '<strong>Non-academic speech:</strong> Delivered at social, political, cultural, business, or informal events.',
+                    '<strong>Tone:</strong> Academic speech is formal and objective; non-academic speech may be casual, emotional, or humorous.',
+                    '<strong>Evidence:</strong> Academic speech depends on facts, research, citations, and examples.',
+                    '<strong>Language:</strong> Academic speech may use technical terms; non-academic speech uses everyday words.',
+                    '<strong>Structure:</strong> Academic speech follows a clear format; non-academic speech can be more flexible.',
+                    '<strong>Audience:</strong> Academic audience may expect depth and accuracy; general audience expects clarity and connection.',
+                    '<strong>Purpose:</strong> Academic speech informs or argues scholarly ideas; non-academic speech may entertain, motivate, celebrate, or persuade.'
+                ],
+                memory: 'Academic = formal + evidence. Non-academic = flexible + audience-friendly.',
+                exam: 'Both speeches need clarity, but academic speech gives greater importance to evidence, structure, and formal tone.'
+            },
+            {
+                seed: 'votethanks',
+                alt: 'Vote of thanks speech',
+                caption: 'A vote of thanks closes an event with gratitude and respect.',
+                intro: 'A vote of thanks is a short formal speech delivered at the end of an event to express gratitude to all people who contributed.',
+                points: [
+                    '<strong>Greeting:</strong> Start respectfully by addressing dignitaries, guests, teachers, and participants.',
+                    '<strong>Purpose:</strong> State that you are presenting the vote of thanks on behalf of the institution or organizing team.',
+                    '<strong>Chief guest:</strong> Thank the chief guest or speaker for their valuable time and message.',
+                    '<strong>Faculty and organizers:</strong> Thank principal, teachers, coordinators, volunteers, and technical team.',
+                    '<strong>Participants:</strong> Appreciate students, audience, and guests for their active presence.',
+                    '<strong>Event value:</strong> Mention that the session was useful, inspiring, or informative.',
+                    '<strong>Closing:</strong> End politely with thanks and best wishes.',
+                    '<strong>Tone:</strong> Keep it brief, sincere, formal, and positive.'
+                ],
+                extra: [
+                    {
+                        title: 'Model Speech',
+                        body: '<p>Respected dignitaries, faculty members, and dear friends, I feel honoured to propose the vote of thanks for this academic event. I sincerely thank our chief guest for sharing valuable insights. I also thank our principal, teachers, organizing committee, volunteers, and technical team for their support. Finally, I thank all participants for their active presence and cooperation. Thank you all.</p>'
+                    }
+                ],
+                memory: 'G-C-F-P-C = Greeting, Chief guest, Faculty, Participants, Closing.',
+                exam: 'A good vote of thanks is short, graceful, inclusive, and sincere.'
+            },
+            {
+                seed: 'calm',
+                alt: 'Staying calm during questions',
+                caption: 'Calm answering depends on listening, pausing, and responding with control.',
+                intro: 'Answering questions in public speaking can create nervousness. Calmness helps the speaker respond clearly and maintain credibility.',
+                points: [
+                    '<strong>Listen fully:</strong> Do not interrupt the questioner; understand the question first.',
+                    '<strong>Pause:</strong> Take two or three seconds to breathe and organize your answer.',
+                    '<strong>Repeat or rephrase:</strong> Restating the question gives time and confirms understanding.',
+                    '<strong>Answer briefly:</strong> Give a direct answer first, then add explanation if needed.',
+                    '<strong>Stay polite:</strong> Even if the question is difficult, respond respectfully.',
+                    '<strong>Admit limits:</strong> If you do not know, say you will check and follow up.',
+                    '<strong>Prepare beforehand:</strong> Predict possible questions and keep examples ready.',
+                    '<strong>Body control:</strong> Keep posture steady, maintain eye contact, and avoid nervous movements.'
+                ],
+                memory: 'L-P-R-A = Listen, Pause, Rephrase, Answer.',
+                exam: 'A calm speaker treats questions as an opportunity to clarify ideas rather than as a threat.'
+            },
+            {
+                seed: 'bodylang',
+                alt: 'Body language in public speaking',
+                caption: 'Body language silently shapes audience trust and interest.',
+                intro: 'Body language is non-verbal communication through posture, gestures, movement, facial expression, and physical presence. It strongly affects audience perception.',
+                points: [
+                    '<strong>Posture:</strong> Standing straight shows confidence, while slouching suggests fear or lack of interest.',
+                    '<strong>Gestures:</strong> Natural hand movements make points clearer and more expressive.',
+                    '<strong>Facial expression:</strong> Expressions should match the message; a serious point needs seriousness, and a warm point can use a smile.',
+                    '<strong>Movement:</strong> Purposeful movement keeps energy alive; random movement distracts.',
+                    '<strong>Eye contact:</strong> Makes the audience feel included and respected.',
+                    '<strong>Open body:</strong> Uncrossed arms and relaxed shoulders show approachability.',
+                    '<strong>First impression:</strong> The audience forms judgement before the first few sentences are complete.',
+                    '<strong>Impact:</strong> Strong body language increases credibility, attention, and emotional connection.'
+                ],
+                memory: 'PAGE = Posture, Arms, Gestures, Eye contact.',
+                exam: 'Effective body language supports spoken words and helps the audience trust the speaker.'
+            },
+            {
+                seed: 'facegesture',
+                alt: 'Facial expressions eye contact and kinesics',
+                caption: 'Face, eyes, and gestures make speech more human and expressive.',
+                intro: 'Facial expressions, kinesics, oculesics, and eye contact are important parts of non-verbal delivery in public speaking.',
+                points: [
+                    '<strong>Facial expressions:</strong> Movements of the face that show emotion such as happiness, concern, confidence, or seriousness.',
+                    '<strong>Use of facial expressions:</strong> They make the speech natural and help the audience understand the speaker\'s feeling.',
+                    '<strong>Kinesics:</strong> The study of body movements such as gestures, posture, head movement, and hand signals.',
+                    '<strong>Kinesics example:</strong> Nodding shows agreement; pointing may emphasize a specific idea.',
+                    '<strong>Oculesics:</strong> The study of eye behavior in communication.',
+                    '<strong>Eye contact:</strong> Looking at audience members for a few seconds creates trust and connection.',
+                    '<strong>Balance:</strong> Too little eye contact shows nervousness; too much staring can make listeners uncomfortable.',
+                    '<strong>Audience scanning:</strong> Look at left, center, and right sections to include everyone.'
+                ],
+                memory: 'Face shows feeling, body shows energy, eyes show connection.',
+                exam: 'Non-verbal cues like expressions, gestures, and eye contact make public speaking more expressive and believable.'
+            },
+            {
+                seed: 'voicemod',
+                alt: 'Voice modulation and paralanguage',
+                caption: 'Voice gives life, emotion, and emphasis to spoken words.',
+                intro: 'Voice modulation means changing voice quality while speaking. Paralanguage refers to vocal features beyond words, such as tone, pitch, pace, volume, pause, and fillers.',
+                points: [
+                    '<strong>Pitch:</strong> High or low voice level; variation prevents monotony.',
+                    '<strong>Pace:</strong> Speaking speed; slow down for important points and speed up slightly for energy.',
+                    '<strong>Volume:</strong> Loudness should match room size and audience needs.',
+                    '<strong>Pause:</strong> A short silence gives emphasis and allows listeners to think.',
+                    '<strong>Tone:</strong> Shows attitude such as seriousness, friendliness, confidence, or concern.',
+                    '<strong>Pronunciation:</strong> Clear articulation helps the audience understand every word.',
+                    '<strong>Fillers:</strong> Repeated words like um, ah, you know should be reduced.',
+                    '<strong>Importance:</strong> Voice modulation keeps the audience interested and makes the message memorable.'
+                ],
+                memory: 'P-P-V-T = Pitch, Pace, Volume, Tone. Add pause for power.',
+                exam: 'A speaker with good voice modulation sounds confident, expressive, and easy to follow.'
+            },
+            {
+                seed: 'proxemics',
+                alt: 'Proxemics haptics and chronomics',
+                caption: 'Space, touch, and time silently communicate meaning.',
+                intro: 'Proxemics, haptics, and chronomics are types of non-verbal communication. They influence how people interpret respect, comfort, authority, and professionalism.',
+                points: [
+                    '<strong>Proxemics:</strong> The study of space and distance in communication.',
+                    '<strong>Proxemics example:</strong> A speaker standing too close may make people uncomfortable; standing too far may reduce connection.',
+                    '<strong>Zones:</strong> Intimate, personal, social, and public distance are used in different situations.',
+                    '<strong>Haptics:</strong> Communication through touch.',
+                    '<strong>Haptics example:</strong> A handshake can show confidence, respect, or agreement.',
+                    '<strong>Haptics caution:</strong> Touch must be culturally appropriate and respectful.',
+                    '<strong>Chronomics:</strong> The study of time in communication.',
+                    '<strong>Chronomics example:</strong> Being punctual, respecting time limits, and ending on time show professionalism.'
+                ],
+                memory: 'Proxemics = space. Haptics = touch. Chronomics = time.',
+                exam: 'These non-verbal elements help speakers appear respectful, professional, and audience-aware.'
+            },
+            {
+                seed: 'aitools',
+                alt: 'AI tools for public speaking',
+                caption: 'AI can support speech practice through feedback, rehearsal, and analysis.',
+                intro: 'AI tools can improve public speaking by giving quick feedback on delivery, language, structure, and confidence. They are useful practice partners when used responsibly.',
+                points: [
+                    '<strong>Speech analysis:</strong> AI tools can measure pace, filler words, pronunciation, clarity, and speaking time.',
+                    '<strong>Script support:</strong> AI can help organize ideas, prepare outlines, and improve transitions.',
+                    '<strong>Practice feedback:</strong> Some tools give scores or suggestions after recording a speech.',
+                    '<strong>Pronunciation help:</strong> AI pronunciation tools help learners speak more clearly.',
+                    '<strong>Confidence building:</strong> Virtual practice reduces fear before real presentations.',
+                    '<strong>Slide preparation:</strong> AI can help create presentation structure and visual summaries.',
+                    '<strong>Limitations:</strong> AI feedback may not fully understand emotion, culture, audience mood, or creativity.',
+                    '<strong>Best use:</strong> Combine AI practice with teacher feedback, peer review, and real speaking experience.'
+                ],
+                memory: 'AI helps with Script, Speech, Speed, and Self-review.',
+                exam: 'AI tools can improve public speaking skills, but human practice and real audience experience remain essential.'
+            }
+        ];
+
+        function renderEnhancedAnswer(answer) {
+            const points = answer.points.map(point => `<li>${point}</li>`).join('');
+            const extra = (answer.extra || []).map(section => `
+                <div class="answer-block">
+                    <h4>${section.title}</h4>
+                    ${section.body}
+                </div>
+            `).join('');
+
+            return `
+                <div class="laq-answer">
+                    <div class="answer-block">
+                        <h4>1. Quick Introduction</h4>
+                        <p>${answer.intro}</p>
+                    </div>
+                    <div class="answer-block">
+                        <h4>2. High-Scoring Points</h4>
+                        <ul class="point-list">${points}</ul>
+                    </div>
+                    ${extra}
+                    <div class="memory-box"><span class="section-label">Fast memory:</span> ${answer.memory}</div>
+                    <div class="exam-line"><span class="section-label">Exam conclusion:</span> ${answer.exam}</div>
+                </div>
+            `;
+        }
+
+        function applyEnhancedAnswers() {
+            const cards = document.querySelectorAll('.accordion-card');
+            cards.forEach((card, index) => {
+                const body = card.querySelector('.accordion-body');
+                if (body && enhancedAnswers[index]) {
+                    body.innerHTML = renderEnhancedAnswer(enhancedAnswers[index]);
+                }
+            });
+        }
+        applyEnhancedAnswers();
+
+        function handleLogin() {
+            const u = document.getElementById('usernameInput').value.trim();
+            const p = document.getElementById('passwordInput').value.trim();
+            if (u === 'powerstar' && p === 'powerstar') {
+                saveLoginStatus();
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('loginError').textContent = '';
+            } else {
+                document.getElementById('loginError').textContent = 'Invalid credentials. Hint: username & password both are powerstar';
+            }
+        }
+        restoreLoginStatus();
+        document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key==='Enter') handleLogin(); });
+        document.getElementById('usernameInput').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('passwordInput').focus(); });
+
+        function toggleAccordion(header) {
+            header.parentElement.classList.toggle('open');
+        }
+
+        function navigateTo(unitId) {
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            const link = document.querySelector(`.sidebar-nav a[href="#${unitId}"]`);
+            if (link) link.classList.add('active');
+            document.querySelectorAll('.unit-section').forEach(s => s.classList.remove('active'));
+            const sec = document.getElementById(unitId);
+            if (sec) sec.classList.add('active');
+            document.getElementById('mainContent').scrollIntoView({ behavior:'smooth', block:'start' });
+            closeSidebar();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
+        document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 900) { closeSidebar(); }
+        });
+        document.querySelectorAll('.sidebar-nav a').forEach(a => a.addEventListener('click', () => { if(window.innerWidth<=900) closeSidebar(); }));
+        // Open first accordion of active unit on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const first = document.querySelector('#unit1 .accordion-card');
+            if (first) first.classList.add('open');
+        });
+    </script>
+</body>
+</html>
